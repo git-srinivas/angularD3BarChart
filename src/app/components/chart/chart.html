@@ -1,0 +1,15 @@
+<div class="jumbotron">
+<div class="container" style="text-align:center">
+  <div style="font-size:2em;margin-bottom:1em">Progress bars demo</div>
+<svg class="chart"></svg>
+
+<form name="chartForm"  novalidate>
+    <select name="selectChart" ng-model="chartModel.chartSelected">
+      <option selected value="chart">select chart</option>
+      <option ng-repeat="i in chartModel.barsArray track by i.id" value={{$index}}>#progress{{$index+1}}</option>
+
+    </select>
+<button ng-repeat="i in data.buttons track by $index" ng-click="handleClick(i)" value="{{i}}" type="button" class="btn btn-primary btn-xs">{{i}}</button>
+</form>
+</div>
+</div>
