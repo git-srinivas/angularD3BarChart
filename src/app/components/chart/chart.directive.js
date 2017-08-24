@@ -27,18 +27,7 @@
       }
       /** @ngInject */
       function linker(scope,elements,attributes){
-        var data = [];
-        var a=10;
-        var width = 420, barHeight = 60;
-        for(var i=0;i<5;i++){
-          data.push({
-            height:50,
-            width:500
-          })
-        }
-
-
-
+        //setting jumbotron width to svg for responsive ness
         var margin = {top: 30, right: 10, bottom: 30, left: 10}
             , width = parseInt(d3.select('.jumbotron').style('width'), 10)
             , width = width - margin.left - margin.right
@@ -51,8 +40,8 @@
         }
         //scope.data = {"buttons":[-15,-18,20,70,20],"bars":[34,75,20,60],"limit":190}
         scope.chartModel = {
-          chartSelected :"select value",
           barsArray :[]
+
         };
         console.log(scope.vm.data)
         if(scope.vm.data){
@@ -60,11 +49,13 @@
         }
         scope.vm.data.bars.map(function(value,index){
           var barPercentage = parseInt(parseFloat(value/scope.data.limit)*100);
-          scope.chartModel.barsArray.push({id:index,value:value,percent:barPercentage})
+          scope.chartModel.barsArray.push({id:index,value:value,percent:barPercentage,name:"#progress"+(index+1)})
         })
+
+        scope.chartModel.chartSelected = scope.chartModel.barsArray[0];
         scope.handleClick = function(value){
-          if(scope.chartModel.chartSelected >= 0){
-            var chartId = scope.chartModel.chartSelected;
+          if(scope.chartModel.chartSelected.id >= 0){
+            var chartId = scope.chartModel.chartSelected.id;
             var gradientPercent = scope.chartModel.barsArray[chartId].percent;
             gradientPercent += parseInt(parseFloat(value/scope.data.limit)*100);
             if(gradientPercent>0){
@@ -76,14 +67,19 @@
 
             if(scope.chartModel.barsArray[chartId].percent >= 0){
                 if(gradientPercent >= 100){
-                    $window.d3.select("#bar"+chartId).style("fill", function(d, i) { return "url(#redgradient)"})
+                    $window.d3.select("#bar"+chartId)
+                        .style("fill", function(d, i){
+                            return "url(#redgradient)"})
                 }
                 else{
-                  $window.d3.select("#bar"+chartId).style("fill", function(d, i) { return "url(#gradient"+chartId+")"})
+                  var x1 = parseInt(parseFloat(width/scaleFactor)*scope.chartModel.barsArray[chartId].percent)+"%";
+                  $window.d3.select("#bar"+chartId)
+                      .style("fill", function(d, i){
+                        return "url(#gradient"+chartId+")"})
                   $window.d3.select("#gradient"+chartId)
                       .transition()
                       .duration(200)
-                      .attr("x1", parseInt(parseFloat(width/scaleFactor)*scope.chartModel.barsArray[chartId].percent)+"%")
+                      .attr("x1", x1)
                 }
 
             }

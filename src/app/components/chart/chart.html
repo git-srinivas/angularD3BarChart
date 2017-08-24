@@ -4,10 +4,10 @@
 <svg class="chart"></svg>
 
 <form name="chartForm"  novalidate>
-    <select name="selectChart" ng-model="chartModel.chartSelected">
-      <option selected value="chart">select chart</option>
-      <option ng-repeat="i in chartModel.barsArray track by i.id" value={{$index}}>#progress{{$index+1}}</option>
-
+    <select name="selectChart" ng-model="chartModel.chartSelected"
+    ng-options="bar.name for bar in chartModel.barsArray track by bar.id">
+      <!-- <option ng-repeat="i in chartModel.barsArray track by i.id" value={{$index}}>#progress{{$index+1}}</option> -->
+      <!-- <option ng-repeat="i in chartModel.barsArray track by i.id" value={{$index}}>#progress{{$index+1}}</option> -->
     </select>
 <button ng-repeat="i in data.buttons track by $index" ng-click="handleClick(i)" value="{{i}}" type="button" class="btn btn-primary btn-xs">{{i}}</button>
 </form>
